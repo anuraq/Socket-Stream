@@ -1,7 +1,8 @@
 import socket
 import time
 import threading
-import keyboard
+#import keyboard
+from pynput.keyboard import Listener
 
 HEADER = 10
 
@@ -15,28 +16,36 @@ msg = "Welcome to server!!"
 msg = f'{len(msg):<{HEADER}}' + msg
 
 def server_socket_running():
-    global STOP_SERVER
     while True:
-        if STOP_SERVER:
-            print("server break")
-            break
         conn, address = s.accept()
         print(f"new connection formed at address: {address}")
         conn.send(bytes(msg,'utf-8'))
         conn.close()
 
-STOP_SERVER = False
-x = threading.Thread(target=server_socket_running, args=())
 
+def is_pressed(key):
+    global EXIT
+    try:
+        if key.char == 'q':
+            EXIT = True
+    except AttributeError:
+        pass
+
+
+x = threading.Thread(target=server_socket_running, args=(), daemon=True)
+k = Listener(on_press=is_pressed, daemon=True)
+k.start()
+
+EXIT = False
 FIRST = False
 j=0
 while True:
     if not FIRST:
         x.start()
+        print("Press 'q' for stopping the server.")
         FIRST = True
-    print('waiting : '+str(j), end='\r')
+    print('Server running for : '+str(j)+' seconds', end='\r')
     time.sleep(1)
     j += 1
-    if keyboard.is_pressed('q'):
-        STOP_SERVER = True
+    if EXIT:
         break

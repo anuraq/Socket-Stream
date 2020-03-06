@@ -2,7 +2,7 @@ import socket
 import time
 import threading
 from pynput.keyboard import Listener
-from audio_stream import audio_stream
+#from audio_stream import audio_stream
 
 HEADER = 10
 HOST = socket.gethostname()
@@ -38,7 +38,8 @@ class Server():
             s.listen(5)
             nonlocal THREAD_START
             HEADER_BUFF = f'{len(data):<{HEADER}}'
-            
+            //START_FROM_HERE
+
 
         def data_selector(data):
             if data == "text":
@@ -62,10 +63,12 @@ class Server():
                     SERVER_EXIT = True
             except AttributeError:
                 pass
+
         if(self.d == "text" or self.d == "text"):
             x = threading.Thread(target=server_socket_running, args=(self.h, self.a, self.d), daemon=True)
         else:
             x = threading.Thread(target=audio_socket_running, args=(self.h, self.a, self.d), daemon=True)
+
         k = Listener(on_press=is_pressed, daemon=True)
         THREAD_START = False
         SERVER_EXIT = False

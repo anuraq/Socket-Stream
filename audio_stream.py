@@ -1,4 +1,4 @@
-import wav
+#import wav
 import pyaudio
 
 class Audio_Stream(pyaudio.PyAudio):

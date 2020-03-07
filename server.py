@@ -15,6 +15,7 @@ class Server():
         self.a = addr
         self.d = data
 
+    #STARTING SERVER IN {SOCKET_STREAM}
     def start_server(self):
         def server_socket_running(HEADER, addr, op):
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -38,9 +39,10 @@ class Server():
             s.listen(5)
             nonlocal THREAD_START
             HEADER_BUFF = f'{len(data):<{HEADER}}'
-            //START_FROM_HERE
+            #START_FROM_HERE
 
 
+        #RETURN DATA ON THE BASIS OF TEXT , AUDIO OR FILE SELECTED
         def data_selector(data):
             if data == "text":
                 while True:
@@ -49,8 +51,14 @@ class Server():
                     if(l.lower() == 'y'):
                         break
                 return bytes(text, 'utf-8')
-            if data == "audio":
+            elif data == "audio":
                 print("\nStart Broadcasting through your microphone : ")
+                while True:
+                    l = input("\nEnter 'Y' to CONFIRM 'N' to CANCEL : ")
+                    if(l.lower() == 'y'):
+                        break
+            elif data == "file":
+                print("\nSelect File to Broadcasting through your Socket : ")
                 while True:
                     l = input("\nEnter 'Y' to CONFIRM 'N' to CANCEL : ")
                     if(l.lower() == 'y'):
